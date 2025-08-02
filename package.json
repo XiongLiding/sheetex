@@ -2,15 +2,45 @@
   "name": "sheetex",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "./dist/bundle.cjs",
+  "module": "./dist/bundle.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "require": "./dist/bundle.cjs",
+    "import": "./dist/bundle.mjs",
+    "types": "./dist/index.d.ts"
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=dist/bundle.cjs",
+    "build:esm": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/bundle.mjs",
+    "build:all": "npm run build && npm run build:min",
+    "build:min": "npm run build:cjs:min && npm run build:esm:min",
+    "build:cjs:min": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --format=cjs --outfile=dist/bundle.min.cjs",
+    "build:esm:min": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --format=esm --outfile=dist/bundle.min.mjs",
+    "build:types": "tsc --emitDeclarationOnly",
+    "postbuild": "npm run build:types"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
+    "@zip.js/zip.js": "^2.7.71",
     "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.8",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
   }
 }
