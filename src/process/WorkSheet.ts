@@ -1,0 +1,126 @@
+import { Style } from '../render/renderStyles.ts';
+import renderSheet from '../render/renderWorkSheet.ts';
+
+export type DataCell =
+  | number
+  | string
+  | {
+      value: string | number;
+      style: string;
+    };
+export type DataRow = DataCell[];
+export type DataBlock = {
+  origin: string;
+  data: DataRow[];
+};
+
+export type SheetCell = {
+  value: number | string;
+  style: number;
+};
+
+export function columnAlphabetToNumber(column: string) {
+  let result = 0;
+  for (let i = 0; i < column.length; i++) {
+    result = result * 26 + (column.charCodeAt(i) - 'A'.charCodeAt(0) + 1);
+  }
+  return result;
+}
+
+export function columnNumberToAlphabet(column: number) {
+  let result = '';
+  while (column > 0) {
+    const remainder = (column - 1) % 26;
+    result = String.fromCharCode(65 + remainder) + result;
+    column = (column - 1) / 26;
+  }
+  return result;
+}
+
+export default class WorkSheet {
+  public readonly name: string;
+  public readonly styles: Record<string, Style>;
+  public styleIndex?: Record<string, number>;
+  private readonly blocks: DataBlock | DataBlock[];
+  private readonly cells: Record<number, Record<number, SheetCell>> = {};
+
+  constructor(name: string, blocks: DataBlock | DataBlock[], styles: Record<string, Style>) {
+    this.name = name;
+    this.blocks = blocks;
+    this.styles = styles;
+  }
+
+  private processCell(cell: number | string | DataCell): SheetCell {
+    if (typeof cell === 'number') {
+      return {
+        value: cell,
+        style: 0,
+      };
+    }
+    if (typeof cell === 'string') {
+      return {
+        value: cell,
+        style: 0,
+      };
+    }
+    if (typeof cell === 'object' && cell.value) {
+      return {
+        value: cell.value,
+        style: cell.style ? this.styleIndex[cell.style] : 0,
+      };
+    }
+  }
+
+  private consumeDataBlock(block: DataBlock) {
+    const origin = block.origin.toUpperCase();
+
+    const regex = /^([A-Z]+)([1-9]\d*)$/;
+    const match = origin.match(regex);
+    if (!match) {
+      throw new Error('单元格坐标格式错误');
+    }
+
+    const [, column, row] = match;
+    const rowOffset = parseInt(row, 10);
+    const columnOffset = columnAlphabetToNumber(column);
+
+    block.data.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (!this.cells[y + rowOffset]) {
+          this.cells[y + rowOffset] = {};
+        }
+        this.cells[y + rowOffset][x + columnOffset] = this.processCell(cell);
+      });
+    });
+  }
+
+  public render() {
+    if (!this.styleIndex) {
+      throw new Error('调用顺序错误：完成样式预处理才能进行渲染');
+    }
+
+    if (Array.isArray(this.blocks)) {
+      this.blocks.forEach((block) => {
+        this.consumeDataBlock(block);
+      });
+    } else {
+      this.consumeDataBlock(this.blocks);
+    }
+
+    const rows = Object.entries(this.cells).map(([row, cells]) => {
+      const renderCells = Object.entries(cells).map(([column, cell]) => {
+        return {
+          value: cell.value,
+          style: cell.style,
+          column: `${columnNumberToAlphabet(parseInt(column, 10))}${row}`,
+          isNumber: typeof cell.value === 'number',
+          isString: typeof cell.value === 'string',
+        };
+      });
+
+      return { number: parseInt(row, 10), cells: renderCells };
+    });
+
+    return renderSheet(rows);
+  }
+}

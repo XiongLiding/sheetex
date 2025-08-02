@@ -1,19 +1,20 @@
 import Mustache from 'mustache'
 import templateString from '../templates/xl/worksheets/sheet.xml.ts'
 
-export interface Cell {
+export interface RenderCell {
+  value: string | number;
+  style: number;
   column: string;
   isString: boolean;
   isNumber: boolean;
-  value: string | number;
 }
 
-export interface Row {
+export interface RenderRow {
   number: number;
-  cells: Cell[];
+  cells: RenderCell[];
 }
 
-export default (rows: Row[]) => {
+export default (rows: RenderRow[]): string => {
   return Mustache.render(templateString, {
     rows,
   })
