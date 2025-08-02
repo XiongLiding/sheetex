@@ -172,12 +172,12 @@ export default (numFmts: string[], fonts: string[], fills: string[], borders: st
     numFmts,
     numFmtsCount: numFmts.length,
     fonts,
-    fontsCount: fonts.length,
+    fontsCount: fonts.length + 1,
     fills,
-    fillsCount: fills.length,
+    fillsCount: fills.length + 1,
     borders,
-    bordersCount: borders.length,
+    bordersCount: borders.length + 1,
     cellXfs,
-    cellXfsCount: cellXfs.length,
+    cellXfsCount: cellXfs.length + 1,
   });
 };

@@ -4,7 +4,7 @@ import {
   renderCellXfsRule,
   renderFillRule,
   renderFontRule, renderFormatRule,
-  Style,
+  type Style,
 } from '../render/renderStyles.ts';
 
 export default class StyleStack {

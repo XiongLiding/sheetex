@@ -4,16 +4,9 @@ export default `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     {{#rows}}
     <row r="{{number}}">
       {{#cells}}
-        {{#isString}}
-        <c r="{{column}}" t="str" {{#style}}s="{{style}}"{{/style}>
-          <t>{{value}}</t>
-        </c>
-        {{/isString}}
-        {{#isNumber}}
-        <c r="{{$id}}" {{#style}}s="{{style}}"{{/style}>
+        <c r="{{position}}"{{#isString}} t="str"{{/isString}}{{#style}} s="{{.}}"{{/style}}>
           <v>{{value}}</v>
         </c>
-        {{/isNumber}}
       {{/cells}}
     </row>
     {{/rows}}

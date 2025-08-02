@@ -7,9 +7,9 @@
   "module": "./dist/bundle.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
+    "types": "./dist/index.d.ts",
     "require": "./dist/bundle.cjs",
-    "import": "./dist/bundle.mjs",
-    "types": "./dist/index.d.ts"
+    "import": "./dist/bundle.mjs"
   },
   "files": [
     "dist/",
@@ -35,10 +35,11 @@
   "license": "ISC",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
-    "@zip.js/zip.js": "^2.7.71",
+    "fflate": "^0.8.2",
     "mustache": "^4.2.0"
   },
   "devDependencies": {
+    "@types/node": "^24.1.0",
     "esbuild": "^0.25.8",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2"

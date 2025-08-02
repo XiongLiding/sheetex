@@ -1,4 +1,4 @@
-import { Style } from '../render/renderStyles.ts';
+import { type Style } from '../render/renderStyles.ts';
 import renderSheet from '../render/renderWorkSheet.ts';
 
 export type DataCell =
@@ -20,19 +20,20 @@ export type SheetCell = {
 };
 
 export function columnAlphabetToNumber(column: string) {
-  let result = 0;
-  for (let i = 0; i < column.length; i++) {
-    result = result * 26 + (column.charCodeAt(i) - 'A'.charCodeAt(0) + 1);
-  }
-  return result;
+  return column.split('').reduce((acc, char) => {
+    return acc + char.charCodeAt(0) - 'A'.charCodeAt(0);
+  }, 0);
 }
 
 export function columnNumberToAlphabet(column: number) {
+  if (column === 0) {
+    return 'A';
+  }
   let result = '';
   while (column > 0) {
-    const remainder = (column - 1) % 26;
+    const remainder = column % 26;
     result = String.fromCharCode(65 + remainder) + result;
-    column = (column - 1) / 26;
+    column = Math.floor(column / 26);
   }
   return result;
 }
@@ -81,7 +82,7 @@ export default class WorkSheet {
     }
 
     const [, column, row] = match;
-    const rowOffset = parseInt(row, 10);
+    const rowOffset = parseInt(row, 10) - 1;
     const columnOffset = columnAlphabetToNumber(column);
 
     block.data.forEach((row, y) => {
@@ -108,17 +109,17 @@ export default class WorkSheet {
     }
 
     const rows = Object.entries(this.cells).map(([row, cells]) => {
+      const rowNumber = parseInt(row, 10) + 1;
       const renderCells = Object.entries(cells).map(([column, cell]) => {
         return {
           value: cell.value,
           style: cell.style,
-          column: `${columnNumberToAlphabet(parseInt(column, 10))}${row}`,
-          isNumber: typeof cell.value === 'number',
+          position: `${columnNumberToAlphabet(parseInt(column, 10))}${rowNumber}`,
           isString: typeof cell.value === 'string',
         };
       });
 
-      return { number: parseInt(row, 10), cells: renderCells };
+      return { number: rowNumber, cells: renderCells };
     });
 
     return renderSheet(rows);

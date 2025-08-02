@@ -6,7 +6,7 @@ import renderContentType from '../render/renderContentType.ts';
 import renderXlRels from '../render/renderXlRels.ts';
 import renderWorkBook from '../render/renderWorkBook.ts';
 import renderStyles from '../render/renderStyles.ts';
-import { BlobWriter, TextReader, ZipWriter } from '@zip.js/zip.js';
+import { strToU8, zip } from 'fflate';
 
 export default class WorkBook {
   private readonly workSheets: WorkSheet[];
@@ -24,7 +24,7 @@ export default class WorkBook {
     });
   }
 
-  public async getZipBlob() {
+  public async getZipBuffer(): Promise<Uint8Array> {
     this.processStyles();
     const rels = renderRels();
     const docPropsApp = renderDocPropsApp(this.sheetIndex);
@@ -41,17 +41,46 @@ export default class WorkBook {
     const workSheets = this.workSheets.map((sheet) => sheet.render());
     const contentType = renderContentType(this.sheetIndex);
 
-    const zipWriter = new ZipWriter(new BlobWriter());
-    await zipWriter.add('_rels/.rels', new TextReader(rels));
-    await zipWriter.add('docProps/app.xml', new TextReader(docPropsApp));
-    await zipWriter.add('xl/_rels/workbook.xml.rels', new TextReader(xlRels));
-    await zipWriter.add('xl/workbook.xml', new TextReader(workBook));
-    await zipWriter.add('xl/styles.xml', styles);
-    for (let i = 0; i < workSheets.length; i++) {
-      await zipWriter.add(`xl/worksheets/sheet${i + 1}.xml`, new TextReader(workSheets[i]));
-    }
-    await zipWriter.add('[Content_Types].xml', new TextReader(contentType));
-    return await zipWriter.close();
+    return new Promise((resolve, reject) => {
+      zip(
+        {
+          _rels: {
+            '.rels': strToU8(rels),
+          },
+          docProps: {
+            'app.xml': strToU8(docPropsApp),
+          },
+          xl: {
+            _rels: {
+              'workbook.xml.rels': strToU8(xlRels),
+            },
+            'workbook.xml': strToU8(workBook),
+            'styles.xml': strToU8(styles),
+            worksheets: workSheets.reduce((acc, workSheet, i) => {
+              acc[`sheet${i + 1}.xml`] = strToU8(workSheet);
+              return acc;
+            }, {}),
+          },
+          '[Content_Types].xml': strToU8(contentType),
+        },
+        (err, data: Uint8Array) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(data);
+        },
+      );
+    });
+  }
+
+  async getZipBlob() {
+    const buffer = await this.getZipBuffer();
+    const newBuffer = new ArrayBuffer(buffer.byteLength);
+    new Uint8Array(newBuffer).set(buffer);
+    return new Blob([newBuffer], {
+      type: 'application/zip',
+    });
   }
 
   async downloadAs(name: string) {
