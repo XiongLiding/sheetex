@@ -10,7 +10,7 @@ const data = [
 ];
 
 const sheet = new WorkSheet(
-  'sheet1',
+  'simple1',
   {
     origin: 'A1',
     data,
@@ -20,4 +20,4 @@ const sheet = new WorkSheet(
 
 const workbook = new WorkBook('simple', [sheet]);
 const buffer = await workbook.getZipBuffer();
-writeFileSync('simple.xlsx', buffer);
+writeFileSync('./xlsx/simple.xlsx', buffer);

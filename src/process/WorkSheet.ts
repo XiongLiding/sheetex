@@ -46,7 +46,10 @@ export default class WorkSheet {
   private readonly cells: Record<number, Record<number, SheetCell>> = {};
 
   constructor(name: string, blocks: DataBlock | DataBlock[], styles: Record<string, Style>) {
-    this.name = name;
+    if (!name) throw new Error('工作表名称不能为空');
+    const invalidName = /[:\\\/?*\[\]]/.test(name);
+    if (invalidName) throw new Error('工作表名称包含非法字符');
+    this.name = name.substring(0, 31);
     this.blocks = blocks;
     this.styles = styles;
   }

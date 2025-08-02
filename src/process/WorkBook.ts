@@ -7,15 +7,21 @@ import renderXlRels from '../render/renderXlRels.ts';
 import renderWorkBook from '../render/renderWorkBook.ts';
 import renderStyles from '../render/renderStyles.ts';
 import { strToU8, zip } from 'fflate';
+import { type SheetInfo } from '../render/types.ts';
 
 export default class WorkBook {
   private readonly workSheets: WorkSheet[];
   private readonly styleStack = new StyleStack();
-  private readonly sheetIndex: number[];
+  private readonly sheets: SheetInfo[];
 
   constructor(name: string, workSheets: WorkSheet[]) {
     this.workSheets = workSheets;
-    this.sheetIndex = workSheets.map((v, i) => i + 1);
+    this.sheets = workSheets.map((v, i) => {
+      return {
+        index: i + 1,
+        name: v.name,
+      };
+    });
   }
 
   private processStyles() {
@@ -27,9 +33,9 @@ export default class WorkBook {
   public async getZipBuffer(): Promise<Uint8Array> {
     this.processStyles();
     const rels = renderRels();
-    const docPropsApp = renderDocPropsApp(this.sheetIndex);
-    const xlRels = renderXlRels(this.sheetIndex);
-    const workBook = renderWorkBook(this.sheetIndex);
+    const docPropsApp = renderDocPropsApp(this.sheets);
+    const xlRels = renderXlRels(this.sheets);
+    const workBook = renderWorkBook(this.sheets);
     const rules = this.styleStack.getRules();
     const styles = renderStyles(
       rules.numFmtRules,
@@ -39,7 +45,7 @@ export default class WorkBook {
       rules.cellXfsRules,
     );
     const workSheets = this.workSheets.map((sheet) => sheet.render());
-    const contentType = renderContentType(this.sheetIndex);
+    const contentType = renderContentType(this.sheets);
 
     return new Promise((resolve, reject) => {
       zip(

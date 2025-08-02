@@ -16,7 +16,7 @@ export default `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <TitlesOfParts>
     <vt:vector size="{{sheetsCount}}" baseType="lpstr">
       {{#sheets}}
-      <vt:lpstr>Sheet{{.}}</vt:lpstr>
+      <vt:lpstr>{{name}}</vt:lpstr>
       {{/sheets}}
     </vt:vector>
   </TitlesOfParts>
