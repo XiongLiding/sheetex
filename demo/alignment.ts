@@ -160,21 +160,6 @@ const style: Styles = {
       textRotation: 180,
     },
   },
-  alignRotate225: {
-    alignment: {
-      textRotation: 225,
-    },
-  },
-  alignRotate270: {
-    alignment: {
-      textRotation: 270,
-    },
-  },
-  alignRotate315: {
-    alignment: {
-      textRotation: 315,
-    },
-  },
   alignWrapText: {
     alignment: {
       wrapText: true,
