@@ -122,56 +122,38 @@ wb.downloadAs('demo.xlsx');
 
 一个 WorkBook 相当于一个 Excel 文件，其中可以包含多个工作表，主要职责是对个工作表进行组织，实现文件的生成与保存
 
-```typescript
+```javascript
 /**
  * 创建一个工作簿
  * @param workSheets 工作表
  */
-new WorkBook(workSheets
-:
-WorkSheet[]
-)
+new WorkBook(workSheets)
 
 /**
  * 获得当前WorkBook对应的文件 buffer
  * @returns Promise<Buffer> 生成文件的 buffer
  */
 WorkBook.getZipBuffer()
-:
-Promise<Buffer>
 
 /**
  * 在浏览器中下载当前WorkBook对应的文件
  * @param filename 文件名
  */
-WorkBook.downloadAs(filename
-:
-string
-):
-void
+WorkBook.downloadAs(filename)
 ```
 
 ### 工作表 WorkSheet
 
 相当于 Excel 文件中一个工作表，每个工作表可以有自己的名称，包含一个或多个数据块，拥有一个样式表，以及一个配置项（包含行高、列宽、单元格合并）
 
-```typescript
+```javascript
 /**
- * @param name 工作表名称
- * @param blocks 数据块
- * @param styles 样式表
- * @param options 工作表选项
+ * @param name string 工作表名称
+ * @param blocks DataBlock[] 数据块
+ * @param styles Styles 样式表
+ * @param options CellOptions 工作表选项
  */
-new WorkSheet(name
-:
-string, data
-:
-DataBlock[], style
-:
-Style, options
-:
-WorkSheetOptions
-)
+new WorkSheet(name, data, style, options)
 ```
 
 ### 数据块 DataBlock
