@@ -14,6 +14,9 @@ export default class WorkBook {
   private readonly styleStack = new StyleStack();
   private readonly sheets: SheetInfo[];
 
+  /**
+   * @param workSheets 工作表
+   */
   constructor(workSheets: WorkSheet[]) {
     this.workSheets = workSheets;
     this.sheets = workSheets.map((v, i) => {

@@ -131,7 +131,7 @@ const style: Styles = {
   },
 };
 
-const sheet = new WorkSheet('options', { origin: 'A1', data }, style, {
+const sheet = new WorkSheet('showtime', { origin: 'A1', data }, style, {
   mergeCells: ['A1:J1', 'A2:A3', 'B2:B3', 'C2:I2', 'J2:J3'],
   colWidths: [{ min: 1, size: [8, 10, 8, 8, 8, 8, 8, 8, 8, 10] }],
   rowHeights: [

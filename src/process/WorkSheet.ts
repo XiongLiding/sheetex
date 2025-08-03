@@ -60,6 +60,12 @@ export default class WorkSheet {
   private readonly colWidths: Size[];
   private readonly rowHeights: Size[];
 
+  /**
+   * @param name 工作表名称
+   * @param blocks 数据块
+   * @param styles 样式表
+   * @param options 工作表选项
+   */
   constructor(
     name: string,
     blocks: DataBlock | DataBlock[],
