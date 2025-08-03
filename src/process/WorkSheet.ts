@@ -67,9 +67,9 @@ export default class WorkSheet {
         style: 0,
       };
     }
-    if (typeof cell === 'object' && cell.value) {
+    if (typeof cell === 'object') {
       return {
-        value: cell.value,
+        value: cell.value ?? '',
         style: cell.style ? this.styleIndex[cell.style] ?? 0 : 0,
       };
     }
@@ -114,6 +114,7 @@ export default class WorkSheet {
     const rows = Object.entries(this.cells).map(([row, cells]) => {
       const rowNumber = parseInt(row, 10) + 1;
       const renderCells = Object.entries(cells).map(([column, cell]) => {
+        console.log(row, column, cell)
         return {
           value: cell.value,
           style: cell.style,

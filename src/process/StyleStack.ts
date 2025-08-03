@@ -23,7 +23,7 @@ export default class StyleStack {
     const fontId = style.font ? this.fontStack.push(renderFontRule(style.font)) : 0;
     const borderId = style.border ? this.borderStack.push(renderBorderRule(style.border)) : 0;
     const fillId = style.fill ? this.fillStack.push(renderFillRule(style.fill)) : 0;
-    const cellXfsRule = renderCellXfsRule(numFmtId, fontId, borderId, fillId, style.alignment);
+    const cellXfsRule = renderCellXfsRule(numFmtId, fontId, fillId, borderId, style.alignment);
     return this.cellXfsStack.push(cellXfsRule);
   }
 

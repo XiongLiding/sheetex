@@ -41,7 +41,7 @@ export interface BorderStyle {
 }
 
 export interface Border {
-  style:
+  style?:
     | 'none'
     | 'dashDot'
     | 'dashDotDot'
@@ -56,15 +56,15 @@ export interface Border {
     | 'slantDashDot'
     | 'thick'
     | 'thin';
-  color: string;
-  diagonalUp: boolean;
-  diagonalDown: boolean;
+  color?: string;
+  diagonalUp?: boolean;
+  diagonalDown?: boolean;
 
-  left: BorderStyle;
-  top: BorderStyle;
-  right: BorderStyle;
-  bottom: BorderStyle;
-  diagonal: BorderStyle;
+  left?: BorderStyle;
+  top?: BorderStyle;
+  right?: BorderStyle;
+  bottom?: BorderStyle;
+  diagonal?: BorderStyle;
 }
 
 export interface Fill {
@@ -131,21 +131,25 @@ export function renderFontRule(font: Font) {
 }
 
 export function renderBorderRule(border: Border) {
-  if (border.style && border.color.length === 8 && border.style !== 'none') {
-    border.left = border.left ?? { style: border.style, color: border.color };
-    border.top = border.top ?? { style: border.style, color: border.color };
-    border.right = border.right ?? { style: border.style, color: border.color };
-    border.bottom = border.bottom ?? { style: border.style, color: border.color };
-    border.diagonal = border.diagonal ?? { style: border.style, color: border.color };
-  }
-  const left = border.left ? `<left style="${border.left.style}" rgb="${border.left.color}"/>` : '';
-  const top = border.top ? `<top style="${border.top.style}" rgb="${border.top.color}"/>` : '';
-  const right = border.right ? `<right style="${border.right.style}" rgb="${border.right.color}"/>` : '';
-  const bottom = border.bottom ? `<bottom style="${border.bottom.style}" rgb="${border.bottom.color}"/>` : '';
-  const diagonal = border.diagonal ? `<diagonal style="${border.diagonal.style}" rgb="${border.diagonal.color}"/>` : '';
+  const inner = ['left', 'right', 'top', 'bottom', 'diagonal']
+    .map((v) => {
+      if (!border.diagonalUp && !border.diagonalDown && v === 'diagonal') {
+        return `<${v}/>`;
+      }
+
+      const style = border[v]?.style ?? border.style ?? '';
+      if (!style || style === 'none') return `<${v}/>`;
+      const styleAttr = style ? ` style="${style}"` : '';
+
+      const color = border[v]?.color ?? border.color ?? '';
+      const colorTag = color ? `<color rgb="${color}" />` : '';
+      return `<${v}${styleAttr}>${colorTag}</${v}>`;
+    })
+    .join('');
+
   const diagonalUp = border.diagonalUp ? ' diagonalUp="1"' : '';
   const diagonalDown = border.diagonalUp ? ' diagonalDown="1"' : '';
-  return `<border${diagonalUp}${diagonalDown}>${left}${top}${right}${bottom}${diagonal}</border>`;
+  return `<border${diagonalUp}${diagonalDown}>${inner}</border>`;
 }
 
 export function renderFillRule(fill: Fill) {
