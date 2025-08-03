@@ -162,6 +162,27 @@ const style: Styles = {
       bgColor: 'FFFF0000',
     },
   },
+  fillGray125: {
+    fill: {
+      patternType: 'gray125',
+      fgColor: 'FFCCCCCC',
+      bgColor: 'FFFF0000',
+    },
+  },
+  fillDarkGrid: {
+    fill: {
+      patternType: 'darkGrid',
+      fgColor: 'FFCCCCCC',
+      bgColor: 'FFFF0000',
+    },
+  },
+  fillLightGrid: {
+    fill: {
+      patternType: 'lightGrid',
+      fgColor: 'FFCCCCCC',
+      bgColor: 'FFFF0000',
+    },
+  },
   fillGray0625: {
     fill: {
       patternType: 'gray0625',
