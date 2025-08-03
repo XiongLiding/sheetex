@@ -20,7 +20,7 @@ export default class StyleStack {
 
   private process(style: Style): number {
     const numFmtId = style.formatCode ? this.numFmtStack.push(renderFormatRule(style.formatCode)) : 0;
-    const fontId = this.fontStack.push(renderFontRule(style.font));
+    const fontId = style.font ? this.fontStack.push(renderFontRule(style.font)) : 0;
     const borderId = style.border ? this.borderStack.push(renderBorderRule(style.border)) : 0;
     const fillId = style.fill ? this.fillStack.push(renderFillRule(style.fill)) : 0;
     const cellXfsRule = renderCellXfsRule(numFmtId, fontId, borderId, fillId, style.alignment);

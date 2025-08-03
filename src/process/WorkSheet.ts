@@ -6,7 +6,7 @@ export type DataCell =
   | string
   | {
       value: string | number;
-      style: string;
+      style?: string;
     };
 export type DataRow = DataCell[];
 export type DataBlock = {
@@ -70,7 +70,7 @@ export default class WorkSheet {
     if (typeof cell === 'object' && cell.value) {
       return {
         value: cell.value,
-        style: cell.style ? this.styleIndex[cell.style] : 0,
+        style: cell.style ? this.styleIndex[cell.style] ?? 0 : 0,
       };
     }
   }
