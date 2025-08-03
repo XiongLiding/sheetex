@@ -3,8 +3,10 @@ import {
   renderBorderRule,
   renderCellXfsRule,
   renderFillRule,
-  renderFontRule, renderFormatRule,
+  renderFontRule,
+  renderFormatRule,
   type Style,
+  type Styles,
 } from '../render/renderStyles.ts';
 
 export default class StyleStack {
@@ -14,29 +16,26 @@ export default class StyleStack {
   public readonly fillStack = new Stack();
   public readonly cellXfsStack = new Stack();
 
-  constructor () {
-  }
+  constructor() {}
 
-  private process (style: Style): number {
-    const numFmtRule = renderFormatRule(style.formatCode);
-    const numFmtId = this.numFmtStack.push(numFmtRule);
-    const fontRule = renderFontRule(style.font);
-    const fontId = this.fontStack.push(fontRule);
-    const borderRule = renderBorderRule(style.border);
-    const borderId = this.borderStack.push(borderRule);
-    const fillRule = renderFillRule(style.fill);
-    const fillId = this.fillStack.push(fillRule);
+  private process(style: Style): number {
+    const numFmtId = style.formatCode ? this.numFmtStack.push(renderFormatRule(style.formatCode)) : 0;
+    const fontId = this.fontStack.push(renderFontRule(style.font));
+    const borderId = style.border ? this.borderStack.push(renderBorderRule(style.border)) : 0;
+    const fillId = style.fill ? this.fillStack.push(renderFillRule(style.fill)) : 0;
     const cellXfsRule = renderCellXfsRule(numFmtId, fontId, borderId, fillId, style.alignment);
     return this.cellXfsStack.push(cellXfsRule);
   }
 
-  public consume (styles: Record<string, Style>) {
-    return Object.fromEntries(Object.entries(styles).map(([k, v]) => {
-      return [k, this.process(v)];
-    }));
+  public consume(styles: Styles) {
+    return Object.fromEntries(
+      Object.entries(styles).map(([k, v]) => {
+        return [k, this.process(v)];
+      }),
+    );
   }
 
-  public getRules () {
+  public getRules() {
     return {
       numFmtRules: this.numFmtStack.getRules(),
       fontRules: this.fontStack.getRules(),

@@ -11,14 +11,14 @@ export interface Alignment {
 }
 
 export interface Font {
-  sz: number;
-  name: string;
-  color: string;
-  b: boolean;
-  i: boolean;
-  u: 'single' | 'double' | 'singleAccounting' | 'doubleAccounting' | boolean;
-  strike: boolean;
-  vertAlign: 'superscript' | 'subscript';
+  sz?: number;
+  name?: string;
+  color?: string;
+  b?: boolean;
+  i?: boolean;
+  u?: 'single' | 'double' | 'singleAccounting' | 'doubleAccounting' | false;
+  strike?: boolean;
+  vertAlign?: 'superscript' | 'subscript' | false;
 }
 
 export interface BorderStyle {
@@ -104,6 +104,8 @@ export interface Style {
   alignment?: Alignment;
 }
 
+export type Styles = Record<string, Style>;
+
 export interface CellXfs {
   numFmtId: number;
   numFontId: number;
@@ -162,8 +164,14 @@ export function renderAlignmentRule(alignment: Alignment) {
   return `<alignment${horizontal}${vertical}${indent}${textRotation}${wrapText}${shrinkToFit}/>`;
 }
 
-export function renderCellXfsRule(numFmtId: number, fontId: number, fillId: number, borderId: number, alignment: Alignment) {
-  const alignmentRule = renderAlignmentRule(alignment);
+export function renderCellXfsRule(
+  numFmtId: number,
+  fontId: number,
+  fillId: number,
+  borderId: number,
+  alignment: Alignment,
+) {
+  const alignmentRule = alignment ? renderAlignmentRule(alignment) : '';
   return `<xf numFmtId="${numFmtId}" fontId="${fontId}" fillId="${fillId}" borderId="${borderId}" xfId="0">${alignmentRule}</xf>`;
 }
 
