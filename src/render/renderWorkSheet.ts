@@ -13,8 +13,18 @@ export interface RenderRow {
   cells: RenderCell[];
 }
 
-export default (rows: RenderRow[]): string => {
+export interface RenderSize {
+  min: number;
+  max: number;
+  size: number;
+}
+
+export default (rows: RenderRow[], mergeCells: string[], cols: RenderSize[]): string => {
   return Mustache.render(templateString, {
     rows,
+    mergeCells: mergeCells,
+    mergeCellsCount: mergeCells.length,
+    cols: cols,
+    colsCount: cols.length,
   });
 };
