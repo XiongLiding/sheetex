@@ -58,19 +58,19 @@ export default class WorkSheet {
     if (typeof cell === 'number') {
       return {
         value: cell,
-        style: 0,
+        style: this.styleIndex?.default ?? 0,
       };
     }
     if (typeof cell === 'string') {
       return {
         value: cell,
-        style: 0,
+        style: this.styleIndex?.default ?? 0,
       };
     }
     if (typeof cell === 'object') {
       return {
         value: cell.value ?? '',
-        style: cell.style ? this.styleIndex[cell.style] ?? 0 : 0,
+        style: cell.style ? (this.styleIndex[cell.style ?? 'default'] ?? 0) : 0,
       };
     }
   }

@@ -2,12 +2,12 @@ import Mustache from 'mustache';
 import templateString from '../templates/xl/styles.xml.ts';
 
 export interface Alignment {
-  horizontal: 'left' | 'center' | 'right' | 'fill' | 'justify' | 'centerContinuous' | 'distributed';
-  vertical: 'top' | 'center' | 'bottom' | 'justify' | 'distributed';
-  indent: number;
-  textRotation: number;
-  wrapText: boolean;
-  shrinkToFit: boolean;
+  horizontal?: 'left' | 'center' | 'right' | 'fill' | 'justify' | 'centerContinuous' | 'distributed';
+  vertical?: 'top' | 'center' | 'bottom' | 'justify' | 'distributed';
+  indent?: number;
+  textRotation?: number;
+  wrapText?: boolean;
+  shrinkToFit?: boolean;
 }
 
 export interface Font {
@@ -87,7 +87,7 @@ export interface Fill {
     | 'lightDown'
     | 'lightUp'
     | 'lightGrid'
-    | 'lightTrellis'
+    | 'lightTrellis';
   fgColor?: string;
   bgColor?: string;
 }
@@ -155,12 +155,15 @@ export function renderFillRule(fill: Fill) {
 }
 
 export function renderAlignmentRule(alignment: Alignment) {
-  const horizontal = alignment.horizontal ? `<horizontal val="${alignment.horizontal}"/>` : '';
-  const vertical = alignment.vertical ? `<vertical val="${alignment.vertical}"/>` : '';
-  const indent = alignment.indent ? `<indent val="${alignment.indent}"/>` : '';
-  const textRotation = alignment.textRotation ? `<textRotation val="${alignment.textRotation}"/>` : '';
-  const wrapText = alignment.wrapText ? '<wrapText/>' : '';
-  const shrinkToFit = alignment.shrinkToFit ? '<shrinkToFit/>' : '';
+  const horizontal = alignment.horizontal ? ` horizontal="${alignment.horizontal}"` : '';
+  const vertical = alignment.vertical ? ` vertical="${alignment.vertical}"` : '';
+  const indent =
+    ['left', 'right', 'distributed'].includes(alignment.horizontal) && alignment.indent
+      ? ` indent="${alignment.indent}"`
+      : '';
+  const textRotation = alignment.textRotation ? ` textRotation="${alignment.textRotation}"` : '';
+  const wrapText = alignment.wrapText ? ' wrapText="1"' : '';
+  const shrinkToFit = alignment.shrinkToFit ? ' shrinkToFit="1"' : '';
   return `<alignment${horizontal}${vertical}${indent}${textRotation}${wrapText}${shrinkToFit}/>`;
 }
 
