@@ -1,8 +1,9 @@
 {
   "name": "sheetex",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "12KB Lightweight Excel Export Tool with Full Style Support, Works Out-of-the-Box for Browsers & Node.js",
   "type": "module",
+  "homepage": "https://github.com/XiongLiding/sheetex",
   "main": "./dist/bundle.cjs",
   "module": "./dist/bundle.mjs",
   "types": "./dist/index.d.ts",
@@ -31,8 +32,8 @@
     "postbuild": "npm run build:types"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "XiongLiding",
+  "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "fflate": "^0.8.2",
