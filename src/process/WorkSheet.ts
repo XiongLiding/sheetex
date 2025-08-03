@@ -114,7 +114,6 @@ export default class WorkSheet {
     const rows = Object.entries(this.cells).map(([row, cells]) => {
       const rowNumber = parseInt(row, 10) + 1;
       const renderCells = Object.entries(cells).map(([column, cell]) => {
-        console.log(row, column, cell)
         return {
           value: cell.value,
           style: cell.style,

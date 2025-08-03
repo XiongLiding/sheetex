@@ -13,7 +13,7 @@ export default class StyleStack {
   public readonly numFmtStack = new Stack(164);
   public readonly fontStack = new Stack();
   public readonly borderStack = new Stack();
-  public readonly fillStack = new Stack();
+  public readonly fillStack = new Stack(2);
   public readonly cellXfsStack = new Stack();
 
   constructor() {}

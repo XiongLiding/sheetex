@@ -71,29 +71,25 @@ export interface Fill {
   patternType:
     | 'none'
     | 'solid'
-    | 'gradient'
-    | 'path'
-    | 'darkDown'
     | 'darkGray'
-    | 'darkGrid'
-    | 'darkHorizontal'
-    | 'darkTrellis'
-    | 'darkUp'
-    | 'darkVertical'
-    | 'gray0625'
-    | 'gray125'
-    | 'lightDown'
-    | 'lightGray'
-    | 'lightGrid'
-    | 'lightHorizontal'
-    | 'lightTrellis'
-    | 'lightUp'
-    | 'lightVertical'
     | 'mediumGray'
-    | 'pct10'
-    | 'pct12';
-  fgColor: string;
-  bgColor: string;
+    | 'lightGray'
+    | 'gray125'
+    | 'gray0625'
+    | 'darkHorizontal'
+    | 'darkVertical'
+    | 'darkDown'
+    | 'darkUp'
+    | 'darkGrid'
+    | 'darkTrellis'
+    | 'lightHorizontal'
+    | 'lightVertical'
+    | 'lightDown'
+    | 'lightUp'
+    | 'lightGrid'
+    | 'lightTrellis'
+  fgColor?: string;
+  bgColor?: string;
 }
 
 export interface Style {
@@ -153,8 +149,8 @@ export function renderBorderRule(border: Border) {
 }
 
 export function renderFillRule(fill: Fill) {
-  const fgColor = fill.fgColor ? `<fgColor rgb="${fill.fgColor}"/>` : '';
-  const bgColor = fill.bgColor ? `<bgColor rgb="${fill.bgColor}"/>` : '';
+  const fgColor = fill.fgColor ? `<fgColor rgb="${fill.fgColor}"/>` : '<fgColor auto="1"/>';
+  const bgColor = fill.bgColor ? `<bgColor rgb="${fill.bgColor}"/>` : '<bgColor auto="1"/>';
   return `<fill><patternFill patternType="${fill.patternType}">${fgColor}${bgColor}</patternFill></fill>`;
 }
 
@@ -186,7 +182,7 @@ export default (numFmts: string[], fonts: string[], fills: string[], borders: st
     fonts,
     fontsCount: fonts.length + 1,
     fills,
-    fillsCount: fills.length + 1,
+    fillsCount: fills.length + 2,
     borders,
     bordersCount: borders.length + 1,
     cellXfs,

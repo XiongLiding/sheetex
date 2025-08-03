@@ -12,7 +12,8 @@ export default `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   </fonts>
   
   <fills count="{{fillsCount}}">
-    <fill><patternFill patternType="none"/></fill>
+    <fill><patternFill patternType="none" /></fill>
+    <fill><patternFill patternType="gray125" /></fill>
     {{#fills}}{{& .}}{{/fills}}
   </fills>
   
