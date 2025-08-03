@@ -34,9 +34,19 @@ const data2 = [
 ];
 
 const style: Styles = {
+  default: {
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+    }
+  },
   header: {
     font: {
       b: true,
+    },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
     }
   },
   borderNone: {
@@ -45,6 +55,10 @@ const style: Styles = {
         style: 'none', color: '00000000',
       }
     },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+    }
   },
   borderDashDot: {
     border: {
@@ -150,8 +164,11 @@ const sheet = new WorkSheet(
     data: data2,
   }],
   style,
+  {
+    colWidths: [{ min: 1, max: 8, size: [10, 20, 20, 10] }]
+  }
 );
 
-const workbook = new WorkBook('header', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
 writeFileSync('./xlsx/border.xlsx', buffer);

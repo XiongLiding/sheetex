@@ -53,7 +53,7 @@ const style: Styles = {
   },
 };
 
-const sheet = new WorkSheet('misc1', [{ origin: 'B2', data }], style, {
+const sheet = new WorkSheet('options', { origin: 'B2', data }, style, {
   mergeCells: ['B2:D2'],
   colWidths: [{ min: 2, size: [10, 20, 20] }],
   rowHeights: [
@@ -62,6 +62,6 @@ const sheet = new WorkSheet('misc1', [{ origin: 'B2', data }], style, {
   ],
 });
 
-const workbook = new WorkBook('misc', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
-writeFileSync('./xlsx/misc.xlsx', buffer);
+writeFileSync('./xlsx/option.xlsx', buffer);

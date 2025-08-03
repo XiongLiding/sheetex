@@ -21,10 +21,18 @@ const data = [
 ];
 
 const style: Styles = {
+  default: {
+    alignment: {
+      horizontal: 'right',
+    },
+  },
   header: {
     font: {
       name: '微软雅黑',
       b: true,
+    },
+    alignment: {
+      horizontal: 'right',
     },
   },
   fmt0: {
@@ -50,7 +58,7 @@ const style: Styles = {
   },
   fmtFinance: {
     formatCode: '$#,##0.00',
-  }
+  },
 };
 
 const sheet = new WorkSheet(
@@ -60,8 +68,11 @@ const sheet = new WorkSheet(
     data,
   },
   style,
+  {
+    colWidths: [{ min: 1, size: [10, 20, 20] }],
+  },
 );
 
-const workbook = new WorkBook('header', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
 writeFileSync('./xlsx/format.xlsx', buffer);

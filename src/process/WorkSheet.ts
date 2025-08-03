@@ -150,7 +150,7 @@ export default class WorkSheet {
         } else {
           // max 有效，在范围内用数组循环填充
           for (let i = col.min; i <= col.max; i++) {
-            const size = col.size[(i - col.min) % (col.max - col.min)];
+            const size = col.size[(i - col.min) % (col.size.length)];
             if (typeof size !== 'number' || size < 0) continue;
 
             renderSize.push({

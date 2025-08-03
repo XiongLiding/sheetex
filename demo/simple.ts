@@ -10,7 +10,7 @@ const data = [
 ];
 
 const sheet = new WorkSheet(
-  'simple1',
+  'simple',
   {
     origin: 'A1',
     data,
@@ -18,6 +18,6 @@ const sheet = new WorkSheet(
   {},
 );
 
-const workbook = new WorkBook('simple', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
 writeFileSync('./xlsx/simple.xlsx', buffer);

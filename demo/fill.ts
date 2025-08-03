@@ -70,13 +70,23 @@ const data6 = [
 ];
 
 const style: Styles = {
+  default: {
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+    },
+  },
   header: {
     font: {
       b: true,
     },
     fill: {
       patternType: 'none',
-    }
+    },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+    },
   },
   fillSolid: {
     fill: {
@@ -202,12 +212,12 @@ const style: Styles = {
       patternType: 'lightTrellis',
       fgColor: 'FFCCCCCC',
       bgColor: 'FFFF0000',
-    }
-  }
+    },
+  },
 };
 
 const sheet = new WorkSheet(
-  'fill1',
+  'fill',
   [
     {
       origin: 'A1',
@@ -232,11 +242,14 @@ const sheet = new WorkSheet(
     {
       origin: 'P1',
       data: data6,
-    }
+    },
   ],
   style,
+  {
+    colWidths: [{ min: 1, max: 18, size: [10, 20, 20] }],
+  },
 );
 
-const workbook = new WorkBook('fill', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
 writeFileSync('./xlsx/fill.xlsx', buffer);

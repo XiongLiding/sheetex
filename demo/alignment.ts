@@ -28,8 +28,8 @@ const data2 = [
   [1, 'top', { value: '演示文本', style: 'alignVerticalTop' }],
   [2, 'center', { value: '演示文本', style: 'alignVerticalCenter' }],
   [3, 'bottom', { value: '演示文本', style: 'alignVerticalBottom' }],
-  [4, 'justify', { value: '演示文本', style: 'alignVerticalJustify' }],
-  [5, 'distributed', { value: '演示文本', style: 'alignVerticalDistributed' }],
+  [4, 'justify', { value: '演\n示\n文\n本', style: 'alignVerticalJustify' }],
+  [5, 'distributed', { value: '演\n示\n文\n本', style: 'alignVerticalDistributed' }],
 ];
 
 const data3 = [
@@ -51,8 +51,8 @@ const data4 = [
     { value: '特殊效果', style: 'header' },
     { value: '效果展示', style: 'header' },
   ],
-  [1, '自动换行', { value: '超过列宽的演示文本', style: 'alignWrapText' }],
-  [2, '缩小字体填充', { value: '超过列宽演示文本', style: 'alignShrinkToFit' }],
+  [1, '自动换行', { value: '当演示文本的长度超过列宽', style: 'alignWrapText' }],
+  [2, '缩小字体填充', { value: '当演示文本的长度超过列宽', style: 'alignShrinkToFit' }],
 ];
 
 const style: Styles = {
@@ -60,7 +60,7 @@ const style: Styles = {
     alignment: {
       horizontal: 'center',
       vertical: 'center',
-    },
+    }
   },
   header: {
     font: {
@@ -75,114 +75,144 @@ const style: Styles = {
   alignHorizontalLeft: {
     alignment: {
       horizontal: 'left',
+      vertical: 'center',
       indent: 1,
     },
   },
   alignHorizontalCenter: {
     alignment: {
       horizontal: 'center',
+      vertical: 'center',
     },
   },
   alignHorizontalRight: {
     alignment: {
       horizontal: 'right',
+      vertical: 'center',
       indent: 1,
     },
   },
   alignHorizontalFill: {
     alignment: {
       horizontal: 'fill',
+      vertical: 'center',
     },
   },
   alignHorizontalJustify: {
     alignment: {
       horizontal: 'justify',
+      vertical: 'center',
     },
   },
   alignHorizontalCenterContinuous: {
     alignment: {
       horizontal: 'centerContinuous',
+      vertical: 'center',
     },
   },
   alignHorizontalDistributed: {
     alignment: {
       horizontal: 'distributed',
+      vertical: 'center',
       indent: 1,
     },
   },
   alignVerticalTop: {
     alignment: {
+      horizontal: 'center',
       vertical: 'top',
     },
   },
   alignVerticalCenter: {
     alignment: {
+      horizontal: 'center',
       vertical: 'center',
     },
   },
   alignVerticalBottom: {
     alignment: {
+      horizontal: 'center',
       vertical: 'bottom',
     },
   },
   alignVerticalJustify: {
     alignment: {
+      horizontal: 'center',
       vertical: 'justify',
     },
   },
   alignVerticalDistributed: {
     alignment: {
+      horizontal: 'center',
       vertical: 'distributed',
     },
   },
   alignRotate0: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       textRotation: 0,
     },
   },
   alignRotate45: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       textRotation: 45,
     },
   },
   alignRotate90: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       textRotation: 90,
     },
   },
   alignRotate135: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       textRotation: 135,
     },
   },
   alignRotate180: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       textRotation: 180,
     },
   },
   alignWrapText: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       wrapText: true,
     },
   },
   alignShrinkToFit: {
     alignment: {
+      horizontal: 'center',
+      vertical: 'center',
       shrinkToFit: true,
-    }
-  }
+    },
+  },
 };
 
 const sheet = new WorkSheet(
-  'alignment1',
+  'alignment',
   [
-    { origin: 'A1', data: data1, },
-    { origin: 'A10', data: data2, },
+    { origin: 'A1', data: data1 },
+    { origin: 'A10', data: data2 },
     { origin: 'F10', data: data3 },
     { origin: 'F1', data: data4 },
   ],
   style,
+  {
+    colWidths: [{ min: 1, size: [10, 20, 20, 10]}, { min: 6, size: [10, 20, 20] }],
+    rowHeights: [{ min: 10, max: 20, size: 80 }],
+  },
 );
 
-const workbook = new WorkBook('alignment', [sheet]);
+const workbook = new WorkBook([sheet]);
 const buffer = await workbook.getZipBuffer();
 writeFileSync('./xlsx/alignment.xlsx', buffer);
