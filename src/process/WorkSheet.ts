@@ -19,21 +19,21 @@ export type SheetCell = {
   style: number;
 };
 
-export function columnAlphabetToNumber(column: string) {
-  return column.split('').reduce((acc, char) => {
-    return acc + char.charCodeAt(0) - 'A'.charCodeAt(0);
-  }, 0);
+export function aton(column: string) {
+  return column
+    .split('')
+    .reverse()
+    .reduce((acc, char, i) => {
+      return acc + (char.charCodeAt(0) - 'A'.charCodeAt(0) + (i >= 1 ? 1 : 0)) * 26 ** i;
+    }, 1);
 }
 
-export function columnNumberToAlphabet(column: number) {
-  if (column === 0) {
-    return 'A';
-  }
+export function ntoa(column: number) {
   let result = '';
   while (column > 0) {
-    const remainder = column % 26;
+    const remainder = (column - 1) % 26;
     result = String.fromCharCode(65 + remainder) + result;
-    column = Math.floor(column / 26);
+    column = Math.floor((column - 1) / 26);
   }
   return result;
 }
@@ -115,7 +115,7 @@ export default class WorkSheet {
 
     const [, column, row] = match;
     const rowOffset = parseInt(row, 10) - 1;
-    const columnOffset = columnAlphabetToNumber(column);
+    const columnOffset = aton(column) - 1;
 
     block.data.forEach((row, y) => {
       row.forEach((cell, x) => {
@@ -156,7 +156,7 @@ export default class WorkSheet {
         } else {
           // max 有效，在范围内用数组循环填充
           for (let i = col.min; i <= col.max; i++) {
-            const size = col.size[(i - col.min) % (col.size.length)];
+            const size = col.size[(i - col.min) % col.size.length];
             if (typeof size !== 'number' || size < 0) continue;
 
             renderSize.push({
@@ -202,7 +202,7 @@ export default class WorkSheet {
         return {
           value: cell.value,
           style: cell.style,
-          position: `${columnNumberToAlphabet(parseInt(column, 10))}${rowNumber}`,
+          position: `${ntoa(parseInt(column, 10) + 1)}${rowNumber}`,
           isString: typeof cell.value === 'string',
         };
       });
