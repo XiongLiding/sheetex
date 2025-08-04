@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ESNext",
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "./dist",
     "allowImportingTsExtensions": true,
     "declaration": true
-  }
+  },
+  "include": [
+    "src"
+  ]
 }
