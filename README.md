@@ -13,7 +13,7 @@
 - 🚀 高效生成 `.xlsx` 格式的 Excel 文件
 - 📦 12KB
   极致轻量（gzip），从零开始编写，仅依赖 [fflate](https://github.com/101arrowz/fflate) & [mustache](https://github.com/janl/mustache)
-- 💻 Office Open XML 标准子集，具备良好兼容性，可在 Microsoft Excel、WPS Office、Numbers、macOS/钉钉/微信预览 中正确展示
+- 💻 Office Open XML 标准子集，具备良好兼容性，可在 Microsoft Excel、WPS Office、Numbers、macOS/钉钉/微信预览中正确展示
 - 🎨 单元格格式面板完整功能支持：
     - 格式（数字的各种格式化）
     - 对齐（水平、缩进、垂直、方向、自动换行、缩小字体填充）
@@ -35,7 +35,7 @@
 
 ## 适用场景与限制
 
-本库的设计遵循以下原则，旨在为 Web 后台的 Excel 导出场景提供**简单、可靠、轻量**的解决方案。
+本库的设计遵循以下原则，旨在为 Web 后台的 Excel 导出场景提供**简单、可靠、轻量**的解决方案，由于本库非常轻量，所以也非常适合移动端场景。
 
 ### 1. 聚焦典型场景
 
@@ -83,6 +83,7 @@
 ### 🤔 适合谁？
 
 - ✅ 需要将表格数据导出为 Excel 的后台管理系统
+- ✅ 移动端 Excel 文件生成
 - ✅ 希望快速集成、不依赖 Node.js 环境的前端项目（当然，也可以在 Node.js 中使用）
 - ✅ 不需要复杂格式或模板修改的轻量级场景
 
