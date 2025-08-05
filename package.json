@@ -1,6 +1,6 @@
 {
   "name": "sheetex",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "12KB Lightweight Excel Export Tool with Full Style Support, Works Out-of-the-Box for Browsers & Node.js",
   "type": "module",
   "homepage": "https://github.com/XiongLiding/sheetex",

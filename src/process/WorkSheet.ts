@@ -69,7 +69,7 @@ export default class WorkSheet {
   constructor(
     name: string,
     blocks: DataBlock | DataBlock[],
-    styles: Record<string, Style>,
+    styles: Record<string, Style> = {},
     options: SheetOptions = {},
   ) {
     if (!name) throw new Error('工作表名称不能为空');
