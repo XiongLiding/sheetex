@@ -19,6 +19,12 @@ export type SheetCell = {
   style: number;
 };
 
+/**
+ * 将列名转换为列序号，A -> 1
+ *
+ * @param column - 列名
+ * @returns 列序号
+ */
 export function aton(column: string) {
   return column
     .split('')
@@ -28,6 +34,12 @@ export function aton(column: string) {
     }, 1);
 }
 
+/**
+ * 将列序号转换为列名，1 -> A
+ *
+ * @param column
+ * @returns 列名
+ */
 export function ntoa(column: number) {
   let result = '';
   while (column > 0) {
@@ -50,28 +62,44 @@ export interface SheetOptions {
   rowHeights?: Size[];
 }
 
+/**
+ * 工作表管理
+ */
 export default class WorkSheet {
+  // 工作表名称
   public readonly name: string;
+
+  // 工作表样式
   public readonly styles: Record<string, Style>;
+
+  // 样式名称与样式索引的映射关系
   public styleIndex?: Record<string, number>;
+
+  // 工作表数据块
   private readonly blocks: DataBlock[];
+
+  // 工作表内的单元格
   private readonly cells: Record<number, Record<number, SheetCell>> = {};
+
+  // 合并的单元格
   private readonly mergeCells: string[];
+
+  // 列宽
   private readonly colWidths: Size[];
+
+  // 行高
   private readonly rowHeights: Size[];
 
   /**
-   * @param name 工作表名称
-   * @param blocks 数据块
-   * @param styles 样式表
-   * @param options 工作表选项
+   * 构造函数
+   *
+   * @constructor
+   * @param name - 工作表名称
+   * @param blocks - 数据块
+   * @param styles - 工作表样式
+   * @param options - 工作表选项
    */
-  constructor(
-    name: string,
-    blocks: DataBlock[],
-    styles: Record<string, Style> = {},
-    options: SheetOptions = {},
-  ) {
+  constructor(name: string, blocks: DataBlock[], styles: Record<string, Style> = {}, options: SheetOptions = {}) {
     if (!name) throw new Error('工作表名称不能为空');
     const invalidName = /[:\\\/?*\[\]]/.test(name);
     if (invalidName) throw new Error('工作表名称包含非法字符');
@@ -83,6 +111,14 @@ export default class WorkSheet {
     this.rowHeights = options.rowHeights ?? [];
   }
 
+  /**
+   * 处理单元格，统一转换成对象形式
+   * 当前单元格若未定义样式，则让其使用默认样式
+   *
+   * @param cell - 单元格，可以是数字、字符串或对象
+   * @private
+   * @return 统一的对象形式的单元格
+   */
   private processCell(cell: number | string | DataCell): SheetCell {
     if (typeof cell === 'number') {
       return {
@@ -104,6 +140,12 @@ export default class WorkSheet {
     }
   }
 
+  /**
+   * 批量处理数据单元格
+   *
+   * @param block 数据块
+   * @private
+   */
   private consumeDataBlock(block: DataBlock) {
     const origin = block.origin.toUpperCase();
 
@@ -127,36 +169,43 @@ export default class WorkSheet {
     });
   }
 
-  private processSize(colWidths: Size[]) {
+  /**
+   * 将行高和列宽处理成标准格式
+   *
+   * @param sizes - 行高和列宽
+   * @private
+   * @return 标准化处理后的行高和列宽
+   */
+  private processSize(sizes: Size[]) {
     const renderSize: RenderSize[] = [];
 
-    colWidths.forEach((col) => {
+    sizes.forEach((v) => {
       // size 是单个数字，可忽略 max，此时 max = min
-      if (typeof col.size === 'number') {
+      if (typeof v.size === 'number') {
         renderSize.push({
-          min: col.min,
-          max: col.max ?? col.min,
-          size: col.size,
+          min: v.min,
+          max: v.max ?? v.min,
+          size: v.size,
         });
       }
 
-      // size 是数组
-      if (Array.isArray(col.size)) {
-        if (!col.max || col.max < col.min) {
+      // v.size 是数组
+      if (Array.isArray(v.size)) {
+        if (!v.max || v.max < v.min) {
           // max 未定义或无效，根据数组长度生成一批列定义
-          col.size.forEach((size, i) => {
+          v.size.forEach((size, i) => {
             if (typeof size !== 'number' || size < 0) return;
 
             renderSize.push({
-              min: col.min + i,
-              max: col.min + i,
+              min: v.min + i,
+              max: v.min + i,
               size,
             });
           });
         } else {
           // max 有效，在范围内用数组循环填充
-          for (let i = col.min; i <= col.max; i++) {
-            const size = col.size[(i - col.min) % col.size.length];
+          for (let i = v.min; i <= v.max; i++) {
+            const size = v.size[(i - v.min) % v.size.length];
             if (typeof size !== 'number' || size < 0) continue;
 
             renderSize.push({
@@ -172,6 +221,11 @@ export default class WorkSheet {
     return renderSize;
   }
 
+  /**
+   * 生成 sheet{n}.xml 文件
+   *
+   * @return - sheet{n}.xml 文件内容
+   */
   public render() {
     if (!this.styleIndex) {
       throw new Error('调用顺序错误：完成样式预处理才能进行渲染');

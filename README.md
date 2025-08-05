@@ -132,7 +132,7 @@ const wb = new WorkBook([ws]);
 在浏览器中保存
 
 ```javascript
-wb.downloadAs('example.xlsx');
+wb.saveAs('example.xlsx');
 ```
 
 在服务器中保存
