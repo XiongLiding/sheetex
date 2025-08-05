@@ -117,7 +117,7 @@ export function renderFormatRule(formatCode: string) {
 export function renderFontRule(font: Font) {
   const sz = font.sz ? `<sz val="${font.sz}"/>` : '';
   const name = font.name ? `<name val="${font.name}"/>` : '';
-  const color = font.color ? `<color rgb="${font.color}"/>` : '';
+  const color = font.color ? `<color rgb="${(font.color.length === 6 ? 'FF' : '') + font.color}"/>` : '';
   const b = font.b ? '<b/>' : '';
   const i = font.i ? '<i/>' : '';
   const u = font.u ? `<u val="${font.u}"/>` : '';
@@ -138,19 +138,19 @@ export function renderBorderRule(border: Border) {
       const styleAttr = style ? ` style="${style}"` : '';
 
       const color = border[v]?.color ?? border.color ?? '';
-      const colorTag = color ? `<color rgb="${color}" />` : '';
+      const colorTag = color ? `<color rgb="${(color.length === 6 ? 'FF' : '') + color}" />` : '';
       return `<${v}${styleAttr}>${colorTag}</${v}>`;
     })
     .join('');
 
   const diagonalUp = border.diagonalUp ? ' diagonalUp="1"' : '';
-  const diagonalDown = border.diagonalUp ? ' diagonalDown="1"' : '';
+  const diagonalDown = border.diagonalDown ? ' diagonalDown="1"' : '';
   return `<border${diagonalUp}${diagonalDown}>${inner}</border>`;
 }
 
 export function renderFillRule(fill: Fill) {
-  const fgColor = fill.fgColor ? `<fgColor rgb="${fill.fgColor}"/>` : '<fgColor auto="1"/>';
-  const bgColor = fill.bgColor ? `<bgColor rgb="${fill.bgColor}"/>` : '<bgColor auto="1"/>';
+  const fgColor = fill.fgColor ? `<fgColor rgb="${(fill.fgColor.length === 6 ? 'FF' : '') + fill.fgColor }"/>` : '<fgColor auto="1"/>';
+  const bgColor = fill.bgColor ? `<bgColor rgb="${(fill.bgColor.length === 6 ? 'FF' : '') + fill.bgColor }"/>` : '<bgColor auto="1"/>';
   return `<fill><patternFill patternType="${fill.patternType}">${fgColor}${bgColor}</patternFill></fill>`;
 }
 

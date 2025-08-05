@@ -54,7 +54,7 @@ export default class WorkSheet {
   public readonly name: string;
   public readonly styles: Record<string, Style>;
   public styleIndex?: Record<string, number>;
-  private readonly blocks: DataBlock | DataBlock[];
+  private readonly blocks: DataBlock[];
   private readonly cells: Record<number, Record<number, SheetCell>> = {};
   private readonly mergeCells: string[];
   private readonly colWidths: Size[];
@@ -68,7 +68,7 @@ export default class WorkSheet {
    */
   constructor(
     name: string,
-    blocks: DataBlock | DataBlock[],
+    blocks: DataBlock[],
     styles: Record<string, Style> = {},
     options: SheetOptions = {},
   ) {
@@ -177,13 +177,9 @@ export default class WorkSheet {
       throw new Error('调用顺序错误：完成样式预处理才能进行渲染');
     }
 
-    if (Array.isArray(this.blocks)) {
-      this.blocks.forEach((block) => {
-        this.consumeDataBlock(block);
-      });
-    } else {
-      this.consumeDataBlock(this.blocks);
-    }
+    this.blocks.forEach((block) => {
+      this.consumeDataBlock(block);
+    });
 
     const colWidths = this.processSize(this.colWidths);
     const rowHeights = this.processSize(this.rowHeights);
