@@ -93,12 +93,12 @@ const styles: Styles = {
       u: 'double',
     },
   },
-  fontUAccountingSingle: {
+  fontUSingleAccounting: {
     font: {
       u: 'singleAccounting',
     },
   },
-  fontUAccountingDouble: {
+  fontUDoubleAccounting: {
     font: {
       u: 'doubleAccounting',
     },
