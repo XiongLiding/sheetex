@@ -23,25 +23,74 @@
     - 全局设置（单元格合并、行高、列宽）
 - 🌐 同时支持 Node.js 和浏览器环境
 - 😀 简洁明了的接口，易于理解和使用
+- 📄 Learn by example，充分的示例，足以替代文档
 
 ## 效果展示
 
-使用本库生成的一个文件在 Microsoft Excel 展示的效果
+一个示例文件在 Microsoft Excel 中的展示效果
 
 ![showtime](./docs/image/showtime.jpg)
 
-生成该文件的代码：[demo/showtime.ts](./demo/showtime.ts)
+生成该文件的代码：[examples/showtime.ts](examples/showtime.ts)
 
-## 取舍
+## 适用场景与限制
 
-1. 本库主要针对的场景是网页应用后台非常常见的查询结果导出功能，所有的设计均基于此场景进行考量
-2. 本库专注于 Excel 文件导出功能，放弃了对 Excel 的解析能力。**因此，本库不适用于读取模版文件并对特定位置进行修改的开发模式
-   **
-3. 本库专注于最常用的样式，并实现了单元格格式面板中的所有功能，同时放弃了对复杂格式的支持，比如将同一个单元格中的文字设置成多种样式
-4. 尊重 Excel 文件中原有的结构和名称，在样式的配置项中尽量复用这些名称
-5. 为了简化使用，本库的数据流被设计成单向的，对象只能在初始化时进行配置，实例化后无法修改
-6. 为了缩小体积并降低系统复杂度，本库使用 mustache 以模板渲染的方式生成 Excel 内部文件，然后使用 fflate 进行压缩，生成最终的
-   Excel 文件
+本库的设计遵循以下原则，旨在为 Web 后台的 Excel 导出场景提供**简单、可靠、轻量**的解决方案。
+
+### 1. 聚焦典型场景
+
+本库主要面向网页应用后台中常见的“查询结果导出 Excel”场景，所有设计均围绕该核心用例展开，力求在常见业务中提供简洁高效的解决方案。
+
+### 2. 专注导出，不支持解析
+
+本库专注于 Excel 文件的**生成与导出**，**不提供解析能力**。因此，以下开发模式**不适用**：
+
+> ❌ 读取现有模板文件，并对特定单元格或区域进行修改。  
+> （如需此类功能，建议使用 [SheetJS](https://sheetjs.com) 等支持读写操作的库。）
+
+### 3. 支持常用样式，舍弃复杂格式
+
+本库覆盖了 Excel 单元格格式面板中的所有样式（如字体、对齐、边框、填充、数字格式等），但**不支持高级格式特性**，例如：
+
+- 在同一个单元格内对不同文字设置不同样式（富文本）
+- 图表、条件格式、公式等高级功能
+
+### 4. 尊重 Excel 原有命名与结构
+
+在 API 设计上，尽可能复用 Excel 原生的术语和结构，降低用户学习成本，提升配置直观性。
+
+### 5. 单向数据流，配置即不可变
+
+为简化使用逻辑并避免运行时状态管理的复杂性，本库采用单向数据流设计：
+
+- 所有配置必须在对象初始化时完成；
+- 实例化后，对象状态不可修改；
+- 确保输出可预测，易于调试和测试。
+
+### 6. 轻量实现：模板渲染 + 流式压缩
+
+为减小体积并降低系统复杂度，本库采用以下技术方案：
+
+- 使用 `Mustache` 模板引擎渲染 Excel 内部 XML 文件；
+- 使用 `fflate` 进行高效压缩，生成最终的 .xlsx 文件。
+
+### 📦 优势：
+
+- 无需依赖大型办公文档处理库，如 jszip + sheetjs（gzip 后 312KB）
+- 包体积小，适合前端直出 Excel 文件
+- 自带样式功能，sheetjs 需购买商业版或使用过时的样式插件
+
+### 🤔 适合谁？
+
+- ✅ 需要将表格数据导出为 Excel 的后台管理系统
+- ✅ 希望快速集成、不依赖 Node.js 环境的前端项目（当然，也可以在 Node.js 中使用）
+- ✅ 不需要复杂格式或模板修改的轻量级场景
+
+### 🚫 不适合谁？
+
+- ❌ 需要读取或修改现有 Excel 文件（建议使用 SheetJS）
+- ❌ 需要单元格内富文本、图表、公式等高级功能
+- ❌ 需要支持 .xls 格式（本库仅输出 .xlsx）
 
 ## 安装
 
@@ -67,56 +116,62 @@ pnpm add sheetex
 
 ### 基础用法
 
-生成工作表和工作簿：
+生成工作表和工作簿（在浏览器和Node.js中都一样）：
 
 ```javascript
 import { WorkSheet, WorkBook } from 'sheetex';
 
-// 生成一个工作表，里面有一个数据块，数据块里有一行数据，第一个列是"hello"，第二列是"world"，数据块左上角位于A1
-const ws = new WorkSheet('sheet1', { data: [['hello', 'world']], origin: 'A1' }, {}, {});
+// 生成一个工作表，里面有一个数据块，数据块里有一行数据，第一个列是"hello"，第二列是"world"，该数据块位于A1
+const ws = new WorkSheet('sheet1', [{ data: [['hello', 'world']], origin: 'A1' }]);
 
 // 生成一个工作簿，里面有一个工作表
 const wb = new WorkBook([ws]);
 ```
 
-若是在 Node.js 中
+在浏览器中保存
+
+```javascript
+wb.downloadAs('example.xlsx');
+```
+
+在服务器中保存
 
 ```javascript
 // 获取文件的 buffer 形式
-const buffer = wb.getZipBuffer();
+const buffer = await wb.getZipBuffer();
 
 // 保存到服务器文件系统
-fs.writeFileSync('demo.xlsx', buffer);
+fs.writeFileSync('example.xlsx', buffer);
+```
 
-// 或通过接口返回给用户（以 express 为例）
+在服务器上生成文件并返回给客户端
+```javascript
+// 获取文件的 buffer 形式
+const buffer = await wb.getZipBuffer();
+
+// 返回给客户端（以 express 为例）
 res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 res.send(buffer);
 ```
 
-若是在浏览器中运行
+## Learn By Example
 
-```javascript
-// 直接调用保存功能
-wb.downloadAs('demo.xlsx');
-```
+您可以通过例子学习本库的使用方法：
 
-## 例子
+**强烈建议在查看示例代码前，先打开同名的 xlsx 文件查看最终效果，可以很好的加快理解。文件位于 src/examples/xlsx/ 目录。**
 
-跟着示例是最快的学习方式：
-
-1. 如果你已经有数据，但以前只能导出成 CSV 文件，那么参考 [simple.ts](./demo/simple.ts) 可以快速导出成 Excel；
-2. 如果你要了解数字的格式化，请参考 [format.ts](./demo/format.ts)
-3. 如果你要了解字体相关的设置，请参考 [font.ts](./demo/font.ts)
-4. 如果你要了解对齐相关的设置，请参考 [alignment.ts](./demo/alignment.ts)
-5. 如果你要了解边框相关的设置，请参考 [border.ts](./demo/border.ts)
-6. 如果你要了解背景色相关的设置，请参考 [fill.ts](./demo/fill.ts)
-7. 如过你要了解行高、列宽、单元格合并，请参考 [option.ts](./demo/option.ts)
+1. [simple.ts](examples/simple.ts) 无样式快速导出 Excel ，适合作为 csv 替代
+2. [format.ts](examples/format.ts) 数字的格式化（取整、保留小数、科学计数法、货币格式等）
+3. [font.ts](examples/font.ts) 字体相关设置（字体、大小、颜色、加粗、斜体、下划线、删除线、上下标） 
+4. [alignment.ts](examples/alignment.ts) 对齐（水平对齐、垂直对齐、缩进、文本旋转、自动换行、缩小字体填充）
+5. [border.ts](examples/border.ts) 边框线型和颜色的设置，以及多边框组合使用的方法
+6. [fill.ts](examples/fill.ts) 背景色填充，一般而言仅需了解其中的 solid 样式即可
+7. [option.ts](examples/option.ts) 行高、列宽、单元格合并 
+8. [showtime.ts](examples/showtime.ts) 根据一个真实项目中的案例编写，展示了对上面各类样式的综合应用
 
 ## API
 
-如果你想进一步了解系统，可以查看此处的说明，已经按照从顶层到细节的顺序对用户使用这个库是需要了解的概念进行了罗列。
-
-也可以顺着这里的顺序去阅读源代码，总共就 600 多行。
+本章节按照从顶层到细节的顺序对用户会接触的类型和方法进行说明。读者也可以顺着这里的顺序去阅读源代码了解内部的实现逻辑。
 
 ### 工作簿 WorkBook
 
@@ -207,7 +262,7 @@ interface Style {
 type FormatCode = string;
 ```
 
-具体使用示例请查看 [demo/format.ts](./demo/format.ts)
+具体使用示例请查看 [examples/format.ts](examples/format.ts)
 
 ### 字体 Font
 
@@ -226,7 +281,7 @@ interface Font {
 }
 ```
 
-具体使用示例请查看 [demo/font.ts](./demo/font.ts)
+具体使用示例请查看 [examples/font.ts](examples/font.ts)
 
 ### 边框 Border
 
@@ -252,7 +307,7 @@ BorderStyle 包含 style 与 color 两个属性；
 
 设置 Border 上的 style 与 color 可以代替分别设置 left/top/right/bottom/diagonal
 
-具体使用示例请查看 [demo/border.ts](./demo/border.ts)
+具体使用示例请查看 [examples/border.ts](examples/border.ts)
 
 ### 填充 Fill
 
@@ -269,7 +324,7 @@ export interface Fill {
 
 注意纯色背景的 patternType 为 solid，填充颜色为 fgColor
 
-具体使用示例请查看 [demo/fill.ts](./demo/fill.ts)
+具体使用示例请查看 [examples/fill.ts](examples/fill.ts)
 
 ### 对齐 Alignment
 
@@ -286,7 +341,7 @@ interface Alignment {
 }
 ```
 
-具体使用示例请查看 [demo/alignment.ts](./demo/alignment.ts)
+具体使用示例请查看 [examples/alignment.ts](examples/alignment.ts)
 
 ### SheetOptions
 
@@ -298,7 +353,7 @@ export interface SheetOptions {
 }
 ```
 
-具体使用示例请查看 [demo/option.ts](./demo/option.ts)
+具体使用示例请查看 [examples/option.ts](examples/option.ts)
 
 ### 合并单元格 MergeCells
 
