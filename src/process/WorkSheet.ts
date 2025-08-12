@@ -93,6 +93,8 @@ export type SheetCell = {
  *
  * @param column - 列名
  * @return - 列序号
+ *
+ * @version 1.1.0
  */
 export function aton(column: string) {
   return column
@@ -113,6 +115,8 @@ export function aton(column: string) {
  *
  * @param column - 列序号
  * @return - 列名
+ *
+ * @version 1.1.0
  */
 export function ntoa(column: number) {
   let result = '';
