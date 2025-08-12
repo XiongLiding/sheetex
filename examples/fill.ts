@@ -8,7 +8,7 @@ import { writeFileSync } from 'node:fs';
  * 填充由两种颜色组成，可以理解成先在下层涂满 bgColor，然后在上层用 fgColor 画出 patternType 对应纹理，上下叠加就是最终填充效果
  * 注意当 bgColor 或 fgColor 未指定时，默认值为 auto，就本库而言表示透明
  *
- * 填充样式只有 Microsoft Excel 和 WPS Office 具有良好支持，在即时通讯软件中预览时看不到效果属于正常现象
+ * 由于即时通讯软件中的预览功能支持有限，在这些软件中看不到纯色以外的填充效果属于正常现象
  */
 
 // 第 1 列图案的演示数据
@@ -235,7 +235,7 @@ const styles: Styles = {
   },
 };
 
-// 将 6 个数据块放到对应的位置
+// 将 6 个数据块放到对应的地址
 const dataBlocks = [
   { origin: 'A1', data: data1 },
   { origin: 'D1', data: data2 },

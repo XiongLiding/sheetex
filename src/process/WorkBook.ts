@@ -11,9 +11,10 @@ import { type SheetInfo } from '../render/types.ts';
 
 /**
  * 工作簿管理
+ * @version 1.0.0
  */
 export default class WorkBook {
-  // 工作表，一个工作簿包含一个或多个工作表
+  // 工作簿中的工作表工作表，一个工作簿可以包含一个或多个工作表
   private readonly workSheets: WorkSheet[];
 
   // 样式栈，用于统一处理样式，所有工作表的样式最终都会入到这个统一的栈中
@@ -25,8 +26,14 @@ export default class WorkBook {
   /**
    * 创建一个工作簿
    *
-   * @constructor
    * @param workSheets - 一个或多个工作表
+   *
+   * @example
+   * ```javascript
+   * const wb = new WorkBook([ws]);
+   * ```
+   *
+   * @version 1.0.0
    */
   constructor(workSheets: WorkSheet[]) {
     this.workSheets = workSheets;
@@ -39,8 +46,9 @@ export default class WorkBook {
   }
 
   /**
-   * 处理样式，将所有工作表的样式逐个丢给样式栈处理
+   * 将所有工作表的样式逐个丢给样式栈处理
    *
+   * @version 1.0.0
    * @private
    */
   private processStyles() {
@@ -52,7 +60,14 @@ export default class WorkBook {
   /**
    * 生成 Buffer 形式的 Excel 文件数据
    *
-   * @return Promise<Uint8Array> - Excel 文件 Buffer 形式
+   * @return - Excel 文件的 Buffer 形式
+   *
+   * @example
+   * ```javascript
+   * const buffer = await wb.getZipBuffer();
+   * ```
+   *
+   * @version 1.0.0
    */
   public async getZipBuffer(): Promise<Uint8Array> {
     // 处理样式
@@ -97,7 +112,7 @@ export default class WorkBook {
           },
           '[Content_Types].xml': strToU8(contentType),
         },
-        (err, data: Uint8Array) => {
+        (err, data) => {
           if (err) {
             return reject(err);
           }
@@ -111,7 +126,14 @@ export default class WorkBook {
   /**
    * 获取 blob 格式的 Excel 文件
    *
-   * @returns {Promise<Blob>} - Excel 文件的 blob 形式
+   * @return - Excel 文件的 blob 形式
+   *
+   * @example
+   * ```javascript
+   * const blob = await wb.getZipBlob();
+   * ```
+   *
+   * @version 1.0.0
    */
   async getZipBlob() {
     const buffer = await this.getZipBuffer();
@@ -126,6 +148,13 @@ export default class WorkBook {
    * 在浏览器端保存为文件
    *
    * @param name - 文件名
+   *
+   * @example
+   * ```javascript
+   * await wb.saveAs('demo.xlsx');
+   * ```
+   *
+   * @version 1.1.0
    */
   async saveAs(name: string) {
     const blob = await this.getZipBlob();
@@ -140,8 +169,14 @@ export default class WorkBook {
   /**
    * 在浏览器端下载为文件
    *
-   * @deprecated
    * @param name - 文件名
+   *
+   * @example
+   * ```javascript
+   * await wb.downloadAs('demo.xlsx');
+   * ```
+   *
+   * @deprecated 1.1.0
    */
   async downloadAs(name: string) {
     await this.saveAs(name);

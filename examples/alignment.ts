@@ -214,7 +214,7 @@ const styles: Styles = {
   },
 };
 
-// 将 4 个数据块放到对应的位置
+// 将 4 个数据块放到对应的地址
 const dataBlocks = [
   { origin: 'A1', data: dataVertical },
   { origin: 'A10', data: dataHorizontal },

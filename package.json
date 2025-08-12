@@ -1,6 +1,6 @@
 {
   "name": "sheetex",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "12KB Lightweight Excel Export Tool with Full Style Support, Works Out-of-the-Box for Browsers & Node.js",
   "type": "module",
   "homepage": "https://github.com/XiongLiding/sheetex",
@@ -30,7 +30,8 @@
     "build:esm:min": "esbuild src/index.ts --bundle --minify --sourcemap --format=esm --outfile=dist/bundle.min.mjs",
     "build:types": "tsc --emitDeclarationOnly",
     "postbuild": "npm run build:types",
-    "publish": "npm run build && npm publish"
+    "publish": "npm run build && npm publish",
+    "typedoc": "typedoc --out docs/api --tsconfig tsconfig.json --includeVersion --plugin typedoc-github-theme --disableSources --excludeInternal --sort kind --sort source-order"
   },
   "keywords": [],
   "author": "XiongLiding",
@@ -44,6 +45,8 @@
     "@types/node": "^24.1.0",
     "esbuild": "^0.25.8",
     "prettier": "^3.6.2",
+    "typedoc": "^0.28.10",
+    "typedoc-github-theme": "^0.3.0",
     "typescript": "^5.9.2"
   }
 }

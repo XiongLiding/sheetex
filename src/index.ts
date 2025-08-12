@@ -1,5 +1,12 @@
 import WorkBook from './process/WorkBook.ts';
-import WorkSheet, { type DataBlock, type DataRow, type DataCell, type SheetOptions, aton, ntoa } from './process/WorkSheet.ts';
+import WorkSheet, {
+  type DataBlock,
+  type DataRow,
+  type DataCell,
+  type SheetOptions,
+  aton,
+  ntoa,
+} from './process/WorkSheet.ts';
 import {
   type Alignment,
   type Border,
@@ -18,8 +25,8 @@ export {
   type DataCell,
   type SheetOptions,
   type Alignment,
-  type Border,
   type BorderStyle,
+  type Border,
   type Fill,
   type Font,
   type Style,
