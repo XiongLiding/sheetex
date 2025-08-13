@@ -94,7 +94,7 @@ export type SheetCell = {
  * @param column - 列名
  * @return - 列序号
  *
- * @version 1.1.0
+ * @since 1.1.0
  */
 export function aton(column: string) {
   return column
@@ -116,7 +116,7 @@ export function aton(column: string) {
  * @param column - 列序号
  * @return - 列名
  *
- * @version 1.1.0
+ * @since 1.1.0
  */
 export function ntoa(column: number) {
   let result = '';
@@ -131,17 +131,18 @@ export function ntoa(column: number) {
 /**
  * 定义一组行高或列宽
  *
- * - 当 max 填写且 size 为数字时，表示从 min 到 max 的行高/列宽都是 size；
- * - 当 max 填写且 size 为数组时，表示从 min 到 max 的行高/列宽依次如 size 数组所述，数组过长会被截断，过短会从头开始重复继续填充；
- * - 当 max 不填且 size 为数字时，表示 min 列的行高/列宽是 size；
- * - 当 max 不填且 size 为数组时，表示从 min 开始，行高/列宽依次如 size 数组中所述，直到数组用尽。
- *
  * @example
  * ```javascript
  * const size = {min: 1, max: 5, size: 20};
  * ```
  *
- * @version 1.0.0
+ * @remarks
+ * - 当 max 填写且 size 为数字时，表示从 min 到 max 的行高/列宽都是 size；
+ * - 当 max 填写且 size 为数组时，表示从 min 到 max 的行高/列宽依次如 size 数组所述，数组过长会被截断，过短会从头开始重复继续填充；
+ * - 当 max 不填且 size 为数字时，表示 min 列的行高/列宽是 size；
+ * - 当 max 不填且 size 为数组时，表示从 min 开始，行高/列宽依次如 size 数组中所述，直到数组用尽。
+ *
+ * @since 1.0.0
  */
 export interface Size {
   /**
@@ -195,7 +196,7 @@ export interface SheetOptions {
 
 /**
  * 工作表管理
- * @version 1.0.0
+ * @since 1.0.0
  */
 export default class WorkSheet {
   /**
@@ -277,7 +278,7 @@ export default class WorkSheet {
    * const ws = new WorkSheet('Sheet3', [block], {}, options);
    * ```
    *
-   * @version 1.0.0
+   * @since 1.0.0
    */
   constructor(name: string, blocks: DataBlock[], styles: Styles = {}, options: SheetOptions = {}) {
     if (!name) throw new Error('工作表名称不能为空');

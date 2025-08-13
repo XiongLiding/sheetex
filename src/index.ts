@@ -4,6 +4,7 @@ import WorkSheet, {
   type DataRow,
   type DataCell,
   type SheetOptions,
+  type Size,
   aton,
   ntoa,
 } from './process/WorkSheet.ts';
@@ -16,6 +17,7 @@ import {
   type Styles,
   type BorderStyle,
 } from './render/renderStyles.ts';
+import { type JustData, justBuffer, justBlob, justSaveAs } from './just.ts';
 
 export {
   WorkBook,
@@ -24,6 +26,7 @@ export {
   type DataRow,
   type DataCell,
   type SheetOptions,
+  type Size,
   type Alignment,
   type BorderStyle,
   type Border,
@@ -33,4 +36,8 @@ export {
   type Styles,
   aton,
   ntoa,
+  type JustData,
+  justBuffer,
+  justBlob,
+  justSaveAs,
 };

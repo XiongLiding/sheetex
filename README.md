@@ -2,8 +2,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
-  <img src="https://img.shields.io/bundlephobia/min/sheetex" alt="Size">
   <img src="https://img.shields.io/npm/v/sheetex" alt="Version">
+  <a href="https://gitee.com/xiongliding/sheetex/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/xiongliding/sheetex?style=flat&logo=github"/></a>
+  <a href="https://gitee.com/xiongliding/sheetex/stargazers"><img src="https://gitee.com/xiongliding/sheetex/badge/star.svg?theme=dark" alt="star"/></a>
 </p>
 
 12KB 轻量 Excel 导出库，完整样式支持，开箱即用，浏览器 & Node.js
@@ -161,7 +162,15 @@ res.send(buffer);
 
 **强烈建议在查看示例代码前，先打开同名的 xlsx 文件查看最终效果，可以很好的加快理解。文件位于 src/examples/xlsx/ 目录。**
 
-1. [simple.ts](examples/simple.ts) 无样式快速导出 Excel ，适合作为 csv 替代
+### 快速使用
+如果标题居中对齐、表头文字加粗、给所有数据套上边框已经是你全部的需求。
+
+尽管用 [just](examples/just.ts) 开头的三个函数实现你的需求吧！
+
+等到对细节有更多要求时，再来查看深入学习部分。
+
+### 深入学习 
+1. [simple.ts](examples/simple.ts) 无样式快速导出 Excel
 2. [format.ts](examples/format.ts) 数字的格式化（取整、保留小数、科学计数法、货币格式等）
 3. [font.ts](examples/font.ts) 字体相关设置（字体、大小、颜色、加粗、斜体、下划线、删除线、上下标） 
 4. [alignment.ts](examples/alignment.ts) 对齐（水平对齐、垂直对齐、缩进、文本旋转、自动换行、缩小字体填充）
@@ -172,7 +181,7 @@ res.send(buffer);
 
 ## API
 
-[API文档](https://xiongliding.github.io/sheetex/api/)
+完整的 [API文档](https://xiongliding.github.io/sheetex/api/)，包含所有对用户暴露的对象、方法和 TypeScript 类型
 
 ## 贡献
 

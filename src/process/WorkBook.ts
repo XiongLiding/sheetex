@@ -11,7 +11,7 @@ import { type SheetInfo } from '../render/types.ts';
 
 /**
  * 工作簿管理
- * @version 1.0.0
+ * @since 1.0.0
  */
 export default class WorkBook {
   // 工作簿中的工作表工作表，一个工作簿可以包含一个或多个工作表
@@ -33,7 +33,7 @@ export default class WorkBook {
    * const wb = new WorkBook([ws]);
    * ```
    *
-   * @version 1.0.0
+   * @since 1.0.0
    */
   constructor(workSheets: WorkSheet[]) {
     this.workSheets = workSheets;
@@ -48,7 +48,7 @@ export default class WorkBook {
   /**
    * 将所有工作表的样式逐个丢给样式栈处理
    *
-   * @version 1.0.0
+   * @since 1.0.0
    * @private
    */
   private processStyles() {
@@ -67,7 +67,7 @@ export default class WorkBook {
    * const buffer = await wb.getZipBuffer();
    * ```
    *
-   * @version 1.0.0
+   * @since 1.0.0
    */
   public async getZipBuffer(): Promise<Uint8Array> {
     // 处理样式
@@ -133,7 +133,7 @@ export default class WorkBook {
    * const blob = await wb.getZipBlob();
    * ```
    *
-   * @version 1.0.0
+   * @since 1.0.0
    */
   async getZipBlob() {
     const buffer = await this.getZipBuffer();
@@ -154,7 +154,7 @@ export default class WorkBook {
    * await wb.saveAs('demo.xlsx');
    * ```
    *
-   * @version 1.1.0
+   * @since 1.1.0
    */
   async saveAs(name: string) {
     const blob = await this.getZipBlob();
